@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('image_path');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Comment::class);
-            $table->foreignIdFor(Like::class);
+            $table->foreignIdFor(Like::class)->nullable();
             $table->timestamps();
         });
     }
