@@ -17,11 +17,12 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('image_path');
-            $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Comment::class);
-            $table->foreignIdFor(Like::class)->nullable();
+            //One-to-many relationship with user
+            $table->foreignId('user_id')->constrained()
+            ->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
+    
     }
 
     /**

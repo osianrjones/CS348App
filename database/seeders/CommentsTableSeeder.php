@@ -16,11 +16,13 @@ class CommentsTableSeeder extends Seeder
         $comment = new Comment;
         $comment->comment = "What a cute cat!";
         $comment->user_id = 1;
+        $comment->post_id = 1;
         $comment->save();
 
         $comment = new Comment;
         $comment->comment = "What breed of dog is that?";
         $comment->user_id = 2;
+        $comment->post_id = 2;
         $comment->save();
 
         Comment::factory()->count(25)->create();

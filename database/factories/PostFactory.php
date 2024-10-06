@@ -23,8 +23,6 @@ class PostFactory extends Factory
         return [
              'image_path' => "images/" . Str::random(10) . ".jpg",
              'user_id' => fake()->randomElement(User::pluck('id')->toArray()),
-             'comment_id' => fake()->randomElement(Comment::pluck('id')->toArray()),
-             'like_id' => fake()->randomElement(Like::pluck('id')->toArray()),
         ];
     }
 }
