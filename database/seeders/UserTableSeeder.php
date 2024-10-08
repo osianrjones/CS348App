@@ -17,7 +17,7 @@ class UserTableSeeder extends Seeder
     {
         //Two admins
         $user = new User;
-        $user->username = "linus";
+        $user->name = "linus";
         $user->password = bcrypt("windows");
         $user->email = "linus.torvalds@linux.com";
         $user->email_verified_at = Carbon::now();
@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
         $user->save();
 
         $user = new User;
-        $user->username = "Gosling";
+        $user->name = "Gosling";
         $user->password = bcrypt("java");
         $user->email = "james.gosling@oracle.com";
         $user->email_verified_at = Carbon::now();
