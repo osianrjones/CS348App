@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.post-list {
+    height: 400px; /* Set the height you want */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.post-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.post-item img {
+    max-width: 100%; /* Scale images to fit */
+    height: auto;
+}
+

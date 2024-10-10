@@ -14,15 +14,23 @@ class PostsTableSeeder extends Seeder
     public function run(): void
     {
         $post = new Post;
-        $post->image_path = "images/dog.jpg";
+        $post->image_path = asset("images/108706.JPG");
         $post->user_id = 1;
         $post->save();
 
         $post = new Post;
-        $post->image_path = "images/cat.jpg";
+        $post->image_path = asset("images/142266.JPG");
         $post->user_id = 2;
         $post->save();
 
-        Post::factory()->count(10)->create();
+        //Create 10 posts for admin user 1
+        Post::factory()->count(10)->create(['user_id' => 1]);
+
+        //Create 10 posts for admin user 2
+        Post::factory()->count(10)->create(['user_id' => 2]);
+
+        //Create 50 posts for random users
+        Post::factory()->count(50)->create();
+
     }
 }

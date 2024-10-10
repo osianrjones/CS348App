@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Post;
 
 class ProfileController extends Controller
 {
@@ -56,5 +57,35 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * A function used to get all the logged in users posts.
+     */
+    public function getPosts(Request $request) {
+        $user = $request -> user();
+        
+        $posts = $user->posts;
+
+        $data = [
+            'user'=> $request -> user(),
+            'posts'=>$posts,
+        ];
+
+        return view('dashboard', $data);
+    }
+
+    /**
+     * Function used to delete a post from a users profile.
+     */
+    public function deletePost(Post $post) {
+
+        \Log::info('Attempting delete', ['post_id' => $post->id]);
+
+        $post->delete();
+
+        \Log::info('Post deleted successfully', ['post_id' => $post->id]);
+
+        return redirect()->back()->with('success', 'Post deleted successfully.');
     }
 }

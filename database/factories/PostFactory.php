@@ -20,9 +20,24 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        //Check if a user is passed into the post factory.
+        $defaultUserId = User::first()->id ?? null;
+
+        //Get a random file the post will have.
+        $files = glob(public_path('images/*.*'));
+        $key = array_rand($files);
+        $file = $files[$key];
+
+        // Convert the system path to a web-accessible path.
+        $relativePath = str_replace(public_path(), '', $file);
+
+        $image_path = asset($relativePath);
+
+        //Assign the post to the user passed in, or if null find a random user.
         return [
-             'image_path' => "images/" . Str::random(10) . ".jpg",
-             'user_id' => fake()->randomElement(User::pluck('id')->toArray()),
+             'image_path' => $image_path,
+             'user_id' => fake()->randomElement(User::pluck('id')->toArray()) ?: $defaultUserId,
         ];
     }
+
 }

@@ -7,9 +7,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProfileController::class, 'getPosts'])
+->middleware(['auth', 'verified'])
+->name('dashboard');
+
+//Route for a user deleting one of their own posts.
+Route::delete('/posts/{post}', [ProfileController::class, 'deletePost'])->name('posts.destroy');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
