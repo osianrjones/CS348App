@@ -14,7 +14,7 @@ class CommentsTableSeeder extends Seeder
     public function run(): void
     {
         $comment = new Comment;
-        $comment->comment = "What a cute cat!";
+        $comment->comment = "What a cute dog!";
         $comment->user_id = 1;
         $comment->post_id = 1;
         $comment->save();

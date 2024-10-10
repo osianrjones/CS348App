@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -12,7 +13,11 @@ Route::get('/dashboard', [ProfileController::class, 'getPosts'])
 ->name('dashboard');
 
 //Route for a user deleting one of their own posts.
-Route::delete('/posts/{post}', [ProfileController::class, 'deletePost'])->name('posts.destroy');
+Route::delete('/posts/{post}', [ProfileController::class, 'deletePost'])->name('posts.deletePost');
+
+//Route for a user to delete a comment on one of their posts.
+Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->middleware(['auth', 'verified'])->name('comments.deleteComment');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
