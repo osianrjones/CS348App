@@ -21,7 +21,7 @@
                         @if ($post->comments->isNotEmpty())
                         <p><u><strong>Comments</strong></u></p>
                             <div>
-                                <ul id="comments">
+                                <ul id="comments-{{$post->id}}">
                                     @foreach ($post->comments as $comment)
                                     <div class="flex justify-between items-center mb-2">
                                         <li>{{ $comment->comment }} <span>- {{ $comment->user->name }}</span><span class="text-gray-400 italic"> ({{$comment->created_at}})</span></li>
@@ -31,10 +31,10 @@
                                 </ul>
                             </div>
                         @endif
-                            <form id="form" class="relative text-black">
+                            <form id="form-{{$post->id}}" class="relative text-black" comment-route="{{ route('comments.create', $post->id) }}">
                                    @csrf
                                    <div class="flex items-start">
-                                        <textarea id="content" style="resize: none; width:100%" class="max-w-full h-11" name="content" placeholder="Leave a comment..." required></textarea>
+                                        <textarea id="content-{{$post->id}}" style="resize: none; width:100%" class="max-w-full h-11" name="content" placeholder="Leave a comment..." required></textarea>
                                         <button type="submit" class="hover:text-green-400">
                                             <i class="fa-solid fa-comment text-gray-400 px-4 py-6 text-2xl"></i>
                                         </button>
@@ -55,20 +55,28 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('form').addEventListener('submit', function(event) {
+            console.log('reloaded')
+            //Loop over every comment box
+            document.querySelectorAll('[id^="form-"]').forEach(function (formElement) {
+
+                //Get the post ID
+                let postId = formElement.id.split('-')[1];
+
+                //Get the route from the form
+                let route = formElement.getAttribute('comment-route');
+
+                formElement.addEventListener('submit', function(event) {
                 event.preventDefault();
-                console.log('Form submitted');
                 
                 //Set AJAX varaiables
                 let form = this;
-                let postId = {{$post->id}};
-                let content = document.getElementById('content').value;
+                let content = document.getElementById('content-' + postId).value;
 
                 //Remove any previous errors
                 document.getElementById('error').style.display = 'none';
 
                 //AJAX request
-                fetch(`{{ route('comments.create', $post->id) }}`, {
+                fetch(route, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -83,23 +91,24 @@
                     //Return code from PHP
                     if (data.success) {
                         //Create new comment from AJAX data.
-                        let newComment = `<li>${data.comment.comment} <span>- ${data.user.name}</span><span class="text-gray-400 italic"> (${data.comment.created_at})</span></li>`
-                        
+                        let newComment = `<li>${data.comment.comment} <span>- ${data.user.name}</span><span class="text-gray-400 italic"> (${data.created_at})</span></li>`
+
                         //Append comment to the comments section
-                        document.getElementById('comments').innerHTML += newComment;
+                        document.getElementById(`comments-${data.comment.post_id}`).innerHTML += newComment;
 
                         //Clear comment textbox
-                        document.getElementById('content').value = '';
+                        document.getElementById(`content-${data.comment.post_id}`).value = '';
                         
                     } else {
                         document.getElementById('error').textContent = data.error;
                         document.getElementById('error').style.display = 'block';
 
                         //Clear comment textbox
-                        document.getElementById('content').value = '';
+                        document.getElementById(`content-${data.comment.post_id}`).value = '';
                     }
                 });
             });
          });
+        });
     </script>   
 </x-app-layout>

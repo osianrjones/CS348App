@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Carbon\Carbon;
 
 class CommentController extends Controller
 {
@@ -37,11 +38,15 @@ class CommentController extends Controller
             'post_id' => $postId,
         ]);
 
+        // Format the 'created_at' value to match the feed view
+        $created_at = Carbon::parse($comment->created_at)->format('Y-m-d H:i:s');
+
         //Return back to the AJAX call.
         return response()->json([
             'success' => true,
             'comment' => $comment,
             'user' => $comment->user,
+            'created_at' => $created_at,
         ]);
 
     }
