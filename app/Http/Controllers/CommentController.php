@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class CommentController extends Controller
 {
@@ -19,5 +20,29 @@ class CommentController extends Controller
         $comment->delete();
 
         return redirect()->back()->with('success', 'Comment deleted successfully.');
+    }
+
+    /**
+     * A create function for a user posting a new comment on a post.
+     */
+    public function createComment(Request $request, $postId) {
+
+        //Find the post to comment on
+        $post = Post::findOrFail($postId);
+
+        //Create a new comment in the database
+        $comment = $post->comments()->create([
+            'user_id' => $request->user()->id,
+            'comment' => $request->comment,
+            'post_id' => $postId,
+        ]);
+
+        //Return back to the AJAX call.
+        return response()->json([
+            'success' => true,
+            'comment' => $comment,
+            'user' => $comment->user,
+        ]);
+
     }
 }

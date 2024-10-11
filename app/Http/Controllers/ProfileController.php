@@ -68,7 +68,7 @@ class ProfileController extends Controller
         $posts = $user->posts()->paginate(3);
 
         $data = [
-            'user'=> $request -> user(),
+            'user'=> $user,
             'posts'=>$posts,
         ];
 
