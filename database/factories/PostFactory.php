@@ -37,6 +37,7 @@ class PostFactory extends Factory
         return [
              'image_path' => $image_path,
              'user_id' => fake()->randomElement(User::pluck('id')->toArray()) ?: $defaultUserId,
+             'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
         ];
     }
 
