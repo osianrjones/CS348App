@@ -13,8 +13,8 @@ class CommentController extends Controller
      */
     public function deleteComment(Comment $comment) {
 
-         // Ensure the authorized user owns the post this comment belongs to.
-        if (auth()->user()->id !== $comment->post->user_id) {
+         // Ensure the authorized user owns the comment.
+        if (auth()->user()->name !== $comment->user->name) {
             abort(403, 'Unauthorized delete.');
         }
 

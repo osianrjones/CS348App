@@ -25,7 +25,16 @@
                                     @foreach ($post->comments as $comment)
                                     <div class="flex justify-between items-center mb-2">
                                         <li>{{ $comment->comment }} <span>- {{ $comment->user->name }}</span><span class="text-gray-400 italic"> ({{$comment->created_at}})</span></li>
-                                        
+                                        @if ($comment->user->name == Auth::user()->name)
+                                        <form action="{{ route('comments.deleteComment', $comment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <!-- Delete Icon (using Font Awesome) -->
+                                            <button type="submit" class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                        @endif
                                     </div> 
                                     @endforeach
                                 </ul>
@@ -55,7 +64,7 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            console.log('reloaded')
+            console.log('reloaded');
             //Loop over every comment box
             document.querySelectorAll('[id^="form-"]').forEach(function (formElement) {
 
@@ -91,10 +100,23 @@
                     //Return code from PHP
                     if (data.success) {
                         //Create new comment from AJAX data.
-                        let newComment = `<li>${data.comment.comment} <span>- ${data.user.name}</span><span class="text-gray-400 italic"> (${data.created_at})</span></li>`
+                        let newComment = `<div class="flex justify-between items-center mb-2"> 
+                                            <li>${data.comment.comment} <span>- ${data.user.name}</span><span class="text-gray-400 italic"> (${data.created_at})</span></li>`
+
+                        let newDelete = `<form action="/comments/${data.comment.id}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this comment?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <!-- Delete Icon (using Font Awesome) -->
+                                            <button type="submit" class="text-red-600 hover:text-red-800">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                        </div>`
+
+                        let newBlock = newComment.concat(newDelete);
 
                         //Append comment to the comments section
-                        document.getElementById(`comments-${data.comment.post_id}`).innerHTML += newComment;
+                        document.getElementById(`comments-${data.comment.post_id}`).innerHTML += newBlock;
 
                         //Clear comment textbox
                         document.getElementById(`content-${data.comment.post_id}`).value = '';
