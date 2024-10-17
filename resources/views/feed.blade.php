@@ -14,7 +14,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 @foreach ($posts as $post)
                     <div class="p-4 border border-gray-200 rounded text-white flex flex-col justify-between h-full">
-                        <p><strong>User's Post:</strong> {{ $post->user->name }}</p><br>
+                        <p><strong>User's Post:</strong><a href="{{ route('users.getUser', $post->user->name) }}"> {{ $post->user->name }}</a></p><br>
                         <p><strong>Posted At:</strong> {{ $post->created_at }}</p><br>
                         <img src="{{ $post->image_path }}" alt="Post Image" class="mb-4 max-w-full h-full object-cover">
                         <div class="mt-auto">
