@@ -9,10 +9,11 @@ use App\Models\Comment;
 class CommentsTableSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the Comment seeding.
      */
     public function run(): void
     {
+        //Two static comments for admin users.
         $comment = new Comment;
         $comment->comment = "What a cute dog!";
         $comment->user_id = 1;
@@ -25,6 +26,7 @@ class CommentsTableSeeder extends Seeder
         $comment->post_id = 2;
         $comment->save();
 
+        //Factory generate 25 random comments, between random posts and random users.
         Comment::factory()->count(25)->create();
     }
 }

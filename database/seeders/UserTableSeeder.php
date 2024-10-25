@@ -15,7 +15,7 @@ class UserTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //Two admins
+        //Statically create two admin users.
         $user = new User;
         $user->name = "linus";
         $user->password = bcrypt("windows");
@@ -34,7 +34,7 @@ class UserTableSeeder extends Seeder
         $user->isAdmin = true;
         $user->save();
 
-        //Factory create non-admins
+        //Factory create 50 random non-admin users.
         User::factory()->count(50)->create();
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //Pivot table between many-to-many relationship user and post
+        //Pivot table between many user's comments, on many posts.
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->string('comment');

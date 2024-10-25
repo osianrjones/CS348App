@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
+     * Note: The order is important for referential integrity.
      */
     public function run(): void
     {

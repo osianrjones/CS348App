@@ -13,6 +13,7 @@ class PostsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        //Statically create two posts for admin users.
         $post = new Post;
         $post->image_path = asset("images/108706.JPG");
         $post->user_id = 1;
@@ -23,10 +24,10 @@ class PostsTableSeeder extends Seeder
         $post->user_id = 2;
         $post->save();
 
-        //Create 10 posts for admin user 1
+        //Create 10 random posts for admin user 1
         Post::factory()->count(10)->create(['user_id' => 1]);
 
-        //Create 10 posts for admin user 2
+        //Create 10 random posts for admin user 2
         Post::factory()->count(10)->create(['user_id' => 2]);
 
         //Create 50 posts for random users

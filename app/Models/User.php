@@ -14,10 +14,20 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /**
+     * Retrieve all posts associated with this user.
+     * 
+     * @return One-To-Many relationship between the one user and their many posts.
+     */
     public function posts() {
         return $this -> hasMany(Post::class);
     }
 
+    /**
+     * Retrieve all comments commented by this user.
+     * 
+     * @return One-To-Many relationship between the one user and their many comments on posts.
+     */
     public function comments() {
         return $this -> hasMany(Comment::class);
     }

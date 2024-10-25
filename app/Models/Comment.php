@@ -9,10 +9,20 @@ class Comment extends Model
 {
     use HasFactory;
 
+    /**
+     * Retrieve the post this comment belongs to.
+     * 
+     * @return One-To-One relationship between one comment on one post.
+     */
     public function post() {
         return $this -> belongsTo(Post::class);
     }
 
+    /**
+     * Retrieve the user who commented this comment.
+     * 
+     * @return One-To-One relationship between one comment from one user.
+     */
     public function user() {
         return $this -> belongsTo(User::class);
     }

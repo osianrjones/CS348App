@@ -28,18 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-/*         if (Schema::hasTable('posts')) {
-            Schema::table('posts', function (Blueprint $table) {
-                $table->dropForeign(['user_id']); // Drop the foreign key first
-            });
-        } */
-/* 
-        if (Schema::hasTable('comments')) {
-            Schema::table('comments', function (Blueprint $table) {
-                $table->dropForeign(['user_id']); // Drop the foreign key first
-            });
-        }    */
-       
         Schema::dropIfExists('users');
     }
 };
