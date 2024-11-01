@@ -23,4 +23,33 @@ class PostController extends Controller
 
         return view('feed', compact('posts'));
     }
+
+    /**
+     * Handle a new post from the user.
+     */
+    public function createPost(Request $request) {
+        //Validate the image is correct format
+
+        $request -> validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg'
+        ]);
+
+        if ($request->file('image')) {
+            //The user creating the post
+            $userId = $request -> user() -> id;
+
+            $imagePath = $request->file('image')->store('images', 'public');
+
+
+            $post = new Post;
+            $post->image_path = asset('storage/' . $imagePath);
+            $post->user_id = $userId;
+            $post->save();
+
+            return redirect()->route('dashboard');
+        } else {
+
+            return redirect()->route('dashboard');
+        } 
+    }
 }

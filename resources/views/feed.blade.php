@@ -24,7 +24,7 @@
                                 <ul id="comments-{{$post->id}}">
                                     @foreach ($post->comments as $comment)
                                     <div class="flex justify-between items-center mb-2">
-                                        <li>{{ $comment->comment }} <span>- {{ $comment->user->name }}</span><span class="text-gray-400 italic"> ({{$comment->created_at}})</span></li>
+                                        <li>{{ $comment->comment }} <span>-<a href="{{ route('users.getUser', $comment->user->name) }}"> {{ $comment->user->name }}</a></span><span class="text-gray-400 italic"> ({{$comment->created_at}})</span></li>
                                         @if ($comment->user->name == Auth::user()->name)
                                         <form action="{{ route('comments.deleteComment', $comment->id) }}" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                             @csrf

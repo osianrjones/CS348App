@@ -65,7 +65,7 @@ class ProfileController extends Controller
     public function getPosts(Request $request) {
         $user = $request -> user();
         
-        $posts = $user->posts()->paginate(3);
+        $posts = $user->posts()->orderBy('created_at', 'desc')->paginate(3);
 
         $data = [
             'user'=> $user,

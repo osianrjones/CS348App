@@ -34,6 +34,9 @@ Route::post('/posts/{post}/comments', [CommentController::class, 'createComment'
 
 Route::get('/user/{name}', [UserController::class, 'getUser'])->name('users.getUser');
 
+//Route for creating a post
+Route::post('/user/post', [PostController::class, 'createPost'])->name('posts.createPost');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

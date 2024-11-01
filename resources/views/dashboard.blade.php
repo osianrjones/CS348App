@@ -55,7 +55,49 @@
                     {{$posts -> links()}}
                 </div>    
             </div>
-
+        </div>
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4 text-gray-900 dark:text-gray-100 flex justify-center">
+                        <form id="uploadPost" action="{{ route('posts.createPost') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                        <div class="flex justify-center mt-6 mb-6">
+                            
+                            <!-- Hidden File Input Triggered by Custom Button -->
+                            <input type="file" name="image" id="image" class="hidden" required>
+                            <button id="selectPost" style="background-color: #3b82f6;" type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-bold" onclick="document.getElementById('image').click();">
+                                New Post
+                            </button>
+                        </div>                   
+                            <div id="previewContainer" class="flex justify-center" style = "display: none;">
+                                <p class="font-bold">Image Preview:</p>
+                                <img id="previewImage" src="#"  style="width: 420px; height: 420px; object-fit: cover;" class=" border-gray-300 rounded">
+                            </div>
+                            <div class="flex justify-center mt-6 mb-6">
+                             <button id="uploadButton" style="display: none; background-color: #22c55e;" type="submit" class="dark:bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+                               Upload
+                            </button>
+                             </div>
+                        </form>    
+                    </div>
         </div>
     </div>
+    <script>
+        document.getElementById('image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            console.log(file);
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const uploadButton = document.getElementById('uploadButton');
+            const selectPostButton = document.getElementById('selectPost');
+
+            if (file && file.type.startsWith('image/')) {
+                previewContainer.style.display = 'block';
+                previewImage.src = URL.createObjectURL(file);
+                uploadButton.style.display = 'block';
+                selectPostButton.innerHTML = "Change Post";
+            } else {
+                alert("Unable to upload this file.");
+            }
+        });
+    </script>         
 </x-app-layout>
