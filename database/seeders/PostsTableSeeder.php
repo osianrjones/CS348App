@@ -17,11 +17,13 @@ class PostsTableSeeder extends Seeder
         $post = new Post;
         $post->image_path = asset("images/108706.JPG");
         $post->user_id = 1;
+        $post->location='Swansea';
         $post->save();
 
         $post = new Post;
         $post->image_path = asset("images/142266.JPG");
         $post->user_id = 2;
+        $post->location='Swansea';
         $post->save();
 
         //Create 10 random posts for admin user 1

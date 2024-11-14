@@ -15,6 +15,30 @@
                 @foreach ($posts as $post)
                     <div class="p-4 border border-gray-200 rounded text-white flex flex-col justify-between h-full">
                         <p><strong>Posted At:</strong> {{ $post->created_at }}</p><br>
+                        <div class="flex items-center space-x-2 mb-2 cursor-pointer" onclick="togglePopup('{{$post->location}}')">
+                                <!-- Element to hover over -->                             
+                                <i class="fas fa-map-marked-alt"></i><p>:</p><p id="location">{{$post->location}}</p>
+                            
+
+                           <!-- Iframe container (hidden by default) -->
+                            <div id="popup" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div class="bg-white p-6 rounded-lg shadow-lg w-[600px] relative">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <button onclick="togglePopup()" class="text-gray-500">&times;</button>
+                                    </div>
+                                    <iframe
+                                        id="iframe" 
+                                        width="100%" 
+                                        height="200" 
+                                        src="" 
+                                        frameborder="0" 
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div> 
+                        </div>
+
+                      
                         <img src="{{ $post->image_path }}" alt="Post Image" class="mb-4 max-w-full h-full object-cover">
                         <div class="mt-auto">
                         @if ($post->comments->isNotEmpty())
@@ -99,5 +123,20 @@
                 alert("Unable to upload this file.");
             }
         });
+
+        function togglePopup(location) {
+            const popup = document.getElementById('popup');
+            const iframe = document.getElementById('iframe');
+
+            console.log(location);
+
+            if (popup.classList.contains('hidden')) {
+                iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC4dDgA7NzpVG-0MCMnNku1g5S5mdJQbHo&q=' + location;
+            } else {
+                iframe.src = ''
+            }
+
+            popup.classList.toggle('hidden');
+        }
     </script>         
 </x-app-layout>

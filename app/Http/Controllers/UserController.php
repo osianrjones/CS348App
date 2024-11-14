@@ -23,8 +23,10 @@ class UserController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate($perPage);
 
+
         $postCount = Post::where('user_id', $user->id)->count();
 
         return view('user', compact('posts', 'postCount', 'user'));
     }
+
 }

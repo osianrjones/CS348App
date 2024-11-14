@@ -52,4 +52,18 @@ class PostController extends Controller
             return redirect()->route('dashboard');
         } 
     }
+
+    function getPlaceName($latitude, $longitude)
+    {
+        $apiKey = config('services.opencage.api_key');
+        $url = "https://api.opencagedata.com/geocode/v1/json?q={$latitude}+{$longitude}&key={$apiKey}";
+
+        $response = Http::get($url);
+
+        if ($response->successful() && !empty($response->json()['results'])) {
+            return $response->json()['results'][0]['formatted'];
+        }
+
+        return 'Unknown Location';
+    }
 }

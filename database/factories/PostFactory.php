@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Like;
+use Faker\Generator as Faker;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
@@ -38,6 +39,7 @@ class PostFactory extends Factory
              'image_path' => $image_path,
              'user_id' => fake()->randomElement(User::pluck('id')->toArray()) ?: $defaultUserId,
              'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
+             'location' => fake()->city,
         ];
     }
 
