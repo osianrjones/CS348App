@@ -23,6 +23,11 @@ Route::get('/feed', [PostController::class, 'getFeed'])
 ->middleware(['auth', 'verified'])
 ->name('feed');
 
+//Route for creating a post
+Route::post('/user/post', [PostController::class, 'createPost'])->name('posts.createPost');
+
+Route::get('/mark-as-read', [CommentController::class, 'markAllAsRead'])->name('markAsRead');
+
 //Route for a user deleting one of their own posts.
 Route::delete('/posts/{post}', [ProfileController::class, 'deletePost'])->name('posts.deletePost');
 
@@ -33,9 +38,6 @@ Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment']
 Route::post('/posts/{post}/comments', [CommentController::class, 'createComment'])->middleware(['auth', 'verified'])->name('comments.create');
 
 Route::get('/user/{name}', [UserController::class, 'getUser'])->name('users.getUser');
-
-//Route for creating a post
-Route::post('/user/post', [PostController::class, 'createPost'])->name('posts.createPost');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

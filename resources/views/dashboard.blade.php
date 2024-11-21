@@ -81,7 +81,7 @@
             </div>
         </div>
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 ">
-                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4 text-gray-900 dark:text-gray-100 flex justify-center">
+                    <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-4 text-gray-900 dark:text-gray-100 flex justify-center items-center">
                         <form id="uploadPost" action="{{ route('posts.createPost') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                         <div class="flex justify-center mt-6 mb-6">
@@ -91,7 +91,16 @@
                             <button id="selectPost" style="background-color: #3b82f6;" type="button" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-bold" onclick="document.getElementById('image').click();">
                                 New Post
                             </button>
-                        </div>                   
+
+                        </div>             
+                        <div class="mt-6 mb-6 flex justify-center">
+                        <input
+                                name="location"
+                                type="text"
+                                class="border border-grey-300 rounded text-black"
+                                placeholder="Enter post location..."
+                            />
+                        </div>      
                             <div id="previewContainer" class="flex justify-center" style = "display: none;">
                                 <p class="font-bold">Image Preview:</p>
                                 <img id="previewImage" src="#"  style="width: 420px; height: 420px; object-fit: cover;" class=" border-gray-300 rounded">
@@ -131,7 +140,7 @@
             console.log(location);
 
             if (popup.classList.contains('hidden')) {
-                iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC4dDgA7NzpVG-0MCMnNku1g5S5mdJQbHo&q=' + location;
+                iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC4dDgA7NzpVG-0MCMnNku1g5S5mdJQbHo&q=' + location                                                                                                                                         ;
             } else {
                 iframe.src = ''
             }

@@ -31,7 +31,8 @@ class PostController extends Controller
         //Validate the image is correct format
 
         $request -> validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg'
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'location' =>'required'
         ]);
 
         if ($request->file('image')) {
@@ -43,10 +44,11 @@ class PostController extends Controller
 
             $post = new Post;
             $post->image_path = asset('storage/' . $imagePath);
+            $post->location = $request->location;
             $post->user_id = $userId;
             $post->save();
 
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('message', 'Your post was created successfully.');
         } else {
 
             return redirect()->route('dashboard');

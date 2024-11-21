@@ -22,7 +22,64 @@
                     </x-nav-link>
                 </div>
             </div>
+            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            @if (Auth::user()->unreadNotifications->count() > 0)
+                <x-dropdown align="right" width="48" class="relative">
+                    <x-slot name="trigger">
+                        <a id="navbarDropdown" class="inline-flex items-center px-3 py-2 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <i class="fa fa-bell"></i>
+                                <span class="badge badge-heavy text-2xl bg-red-400 bg-success">  {{Auth::user()->unreadNotifications()->count()}}</span>
+                        </a>
+                    </x-slot>
 
+                    <x-slot name="content">
+                        <ul class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 font-bold pl-2">
+                            <a href="{{route('markAsRead')}}" class="btn btn-success btn-sm">Mark All Read</a>
+                        </ul>
+                        @foreach (auth()->user()->unreadNotifications as $notification)
+                            <a href="{{ route('users.getUser', $notification->data['user']) }}" class="text-success text-white"><li class="p-1 text-success">{{$notification->data['data']}}</li></a>
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
+            @else
+                <div class="inline-flex items-center px-3 py-2 font-medium rounded-md text-gray-500 cursor-default">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge badge-light">0</span>
+                </div>
+            @endif
+            </div>
+        @if (session('message'))
+            <div
+                id="sessionNotificationDropdown"
+                class="absolute top-10 right-0 w-64 p-4 bg-gray-800 text-green-500 rounded shadow-lg opacity-100 transition-opacity duration-500 ease-in-out"
+                style="display: none;"
+            >
+                <div class="flex justify-between items-center text-green-500">
+                    <span>{{ session('message') }}</span>
+                    <button id="sessionCloseNotification" class="text-green-500 hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        @endif
+        @if ($errors->any())
+            <div
+                id="errorNotificationDropdown"
+                class="absolute top-10 right-0 w-64 p-4 bg-gray-800 text-red-500 rounded shadow-lg opacity-100 transition-opacity duration-500 ease-in-out"
+                style="display: none;"
+            >
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <div class="flex justify-between items-center">
+                        <span>{{ $error }}</span>
+                        <button id="errorCloseNotification" class="text-gray-400 hover:text-gray-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    @endforeach
+                </ul>
+            </div>
+        @endif     
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
@@ -102,4 +159,48 @@
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        if (document.getElementById('sessionNotificationDropdown')) {
+            const notificationDropdown = document.getElementById('sessionNotificationDropdown');
+            notificationDropdown.style.display = 'block';
+
+            // Automatically fade out the notification after 5 seconds
+            setTimeout(function () {
+                notificationDropdown.classList.add('opacity-0');
+                setTimeout(function () {
+                    notificationDropdown.style.display = 'none';
+                }, 500); // Wait for the fade-out animation to finish
+            }, 5000); // Wait for 5 seconds before fading out
+
+            // Close the notification manually when the close button is clicked
+            document.getElementById('sessionCloseNotification').addEventListener('click', function () {
+                notificationDropdown.classList.add('opacity-0');
+                setTimeout(function () {
+                    notificationDropdown.style.display = 'none';
+                }, 500);
+            });
+        }
+        if (document.getElementById('errorNotificationDropdown')) {
+            const notificationDropdown = document.getElementById('errorNotificationDropdown');
+            notificationDropdown.style.display = 'block';
+
+            // Automatically fade out the notification after 5 seconds
+            setTimeout(function () {
+                notificationDropdown.classList.add('opacity-0');
+                setTimeout(function () {
+                    notificationDropdown.style.display = 'none';
+                }, 500); // Wait for the fade-out animation to finish
+            }, 5000); // Wait for 5 seconds before fading out
+
+            // Close the notification manually when the close button is clicked
+            document.getElementById('errorCloseNotification').addEventListener('click', function () {
+                notificationDropdown.classList.add('opacity-0');
+                setTimeout(function () {
+                    notificationDropdown.style.display = 'none';
+                }, 500);
+            });
+        }
+    });
+    </script>
 </nav>

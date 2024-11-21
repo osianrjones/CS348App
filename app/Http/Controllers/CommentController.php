@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
+use App\Notifications\CommentNotification;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
 class CommentController extends Controller
@@ -41,6 +44,8 @@ class CommentController extends Controller
         // Format the 'created_at' value to match the feed view
         $created_at = Carbon::parse($comment->created_at)->format('Y-m-d H:i:s');
 
+        $post->user->notify(new CommentNotification($request->user()->name));
+
         //Return back to the AJAX call.
         return response()->json([
             'success' => true,
@@ -49,5 +54,10 @@ class CommentController extends Controller
             'created_at' => $created_at,
         ]);
 
+    }
+
+    public function markAllAsRead() {
+        Auth::user()->unreadNotifications->markAsRead();
+        return redirect()->back();
     }
 }
