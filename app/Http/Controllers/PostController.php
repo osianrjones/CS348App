@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -68,4 +69,75 @@ class PostController extends Controller
 
         return 'Unknown Location';
     }
+
+    function getAdminSearch(Request $request) {
+        if ($request->user() && $request -> user() -> isAdmin) {
+
+            $location = $request->query('location');
+            $user = $request->query('user');
+            $postDateTime = $request->query('post');
+
+            $query = Post::query();
+
+            if ($location) {
+                $query -> where('location', $location);
+            }
+
+           /*  if ($user) {
+                $userId = User::where('name', '=', $user)->value('id');
+
+                if ($userId) {
+                    $query -> where('user_id', $userId);
+                }
+            } */
+
+            $query -> where('user_id', $user);
+
+            if ($postDateTime) {
+                $query -> where('created_at', $postDateTime);
+            }
+
+            $perPage = 3;
+
+            $posts = $query->orderBy('created_at', 'desc')->paginate($perPage);
+
+            $users = User::all();
+
+            $postDatesTimes = Post::distinct('created_at')->pluck('created_at');
+
+            $locations = Post::distinct('location')->pluck('location');
+
+            return view('admin', compact('posts','locations','users','postDatesTimes'));
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    /**
+     * Function used to delete a post from a users profile.
+     */
+    public function adminDeletePost(Post $post, Request $request) {
+        if ($request->user() && $request -> user() -> isAdmin) {
+
+        $post->delete();
+
+        return redirect()->back()->with('success', 'Post deleted successfully.');
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $postIds = $request->input('post_ids', []);
+
+        if (!empty($postIds)) {
+            Post::whereIn('id', $postIds)->delete();
+
+            return redirect()->back()->with('success', 'Selected posts were deleted.');
+        }
+
+        return redirect()->back()->with('error', 'No posts selected.');
+        }
+
 }

@@ -23,6 +23,10 @@ Route::get('/feed', [PostController::class, 'getFeed'])
 ->middleware(['auth', 'verified'])
 ->name('feed');
 
+Route::get('/admin', [PostController::class, 'getAdminSearch'])
+->middleware(['auth', 'verified'])
+->name('admin');
+
 //Route for creating a post
 Route::post('/user/post', [PostController::class, 'createPost'])->name('posts.createPost');
 
@@ -30,6 +34,10 @@ Route::get('/mark-as-read', [CommentController::class, 'markAllAsRead'])->name('
 
 //Route for a user deleting one of their own posts.
 Route::delete('/posts/{post}', [ProfileController::class, 'deletePost'])->name('posts.deletePost');
+
+Route::delete('/admin/posts/{post}', [PostController::class, 'adminDeletePost'])->name('admin.deletePost');
+
+Route::delete('/admin/delete', [PostController::class, 'bulkDelete'])->name('bulkDelete');
 
 //Route for a user to delete a comment on one of their posts.
 Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->middleware(['auth', 'verified'])->name('comments.deleteComment');
