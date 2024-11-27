@@ -107,6 +107,8 @@ class PostController extends Controller
 
             $locations = Post::distinct('location')->pluck('location');
 
+            $posts->appends(request()->except('page'));
+
             return view('admin', compact('posts','locations','users','postDatesTimes'));
         } else {
             return redirect()->route('dashboard');
@@ -130,6 +132,8 @@ class PostController extends Controller
     public function bulkDelete(Request $request)
     {
         $postIds = $request->input('post_ids', []);
+
+        dd($postIds);
 
         if (!empty($postIds)) {
             Post::whereIn('id', $postIds)->delete();

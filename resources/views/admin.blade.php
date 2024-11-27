@@ -48,13 +48,8 @@
                         Search
                     </button>
             </form>
-            <form method="POST" action="{{ route('bulkDelete') }}">
-                @csrf
-                @method('DELETE')
-                    <button type="submit" class="border rounded-md border-red-600 text-red-600 px-2 py-2" style="border-color: rgb(220 38 38 / var(--tw-border-opacity));">
-                        Delete
-                    </button>
-                </div>
+           
+            </div>
         </div>
     </div>
         
@@ -78,7 +73,12 @@
                                     @endif
                                     </a>
                                 </p>                              
-                                <input class="ml-6" type="checkbox" name="post_ids[]" value="{{ $post->id }}" class="select-post">
+                                <form method="POST" action="{{ route('posts.deletePost', $post->id) }}">
+                                    @csrf
+                                    @method('DELETE')
+                                        <button type="submit" class="ml-6 border rounded-md border-red-600 text-red-600 px-2 py-2 cursor-pointer" style="border-color: rgb(220 38 38 / var(--tw-border-opacity));">
+                                            Delete
+                                        </button>
                                 </form>
                             </div>
                             <br> 
@@ -134,10 +134,9 @@
                                             <button type="submit" class="hover:text-green-400">
                                                 <i class="fa-solid fa-comment text-gray-400 px-4 py-6 text-2xl"></i>
                                             </button>
-                                        </div>
+                                    </div>
                                 </form>
                             </div>
-                        </form>
                         </div>
                 @endforeach
                 @else
@@ -151,7 +150,6 @@
                 </div>
                 <div id="error" class="text-red-500" style="display:none;"></div>    
             </div>
-
         </div>
     </div>
     <script>
