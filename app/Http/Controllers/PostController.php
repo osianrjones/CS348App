@@ -33,7 +33,7 @@ class PostController extends Controller
 
         $request -> validate([
             'image' => 'required|image|mimes:jpeg,png,jpg',
-            'location' =>'required'
+            'location' =>'required|regex:/^[a-zA-Z\s]+$/'
         ]);
 
         if ($request->file('image')) {

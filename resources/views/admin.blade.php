@@ -109,8 +109,12 @@
                             <div class="mt-auto">
                             @if ($post->comments->isNotEmpty())
                             <p><u><strong>Comments</strong></u></p>
+                            @endif
                                 <div>
                                     <ul id="comments-{{$post->id}}">
+                                        <div class="hidden">
+                                            <p>Test</p>
+                                        </div>
                                         @foreach ($post->comments as $comment)
                                         <div class="flex justify-between items-center mb-2">
                                             <li>{{ $comment->comment }} <span>-<a href="{{ route('users.getUser', $comment->user->name) }}"> {{ $comment->user->name }}</a></span><span class="text-gray-400 italic"> ({{$comment->created_at}})</span></li>
@@ -126,7 +130,6 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                            @endif
                                 <form id="form-{{$post->id}}" class="relative text-black" comment-route="{{ route('comments.create', $post->id) }}">
                                     @csrf
                                     <div class="flex items-start">
