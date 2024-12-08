@@ -39,6 +39,11 @@
                             </div> 
                         </div>
                         <img src="{{ $post->image_path }}" alt="Post Image" class="mb-4 max-w-full h-full object-cover">
+                        <div class="flex justify-stretch gap-2">
+                            @foreach ($post->tags as $tag)
+                                <a href="{{ route('posts.getByTag', $tag->name) }}"><span><i class="fa-solid fa-tag"></i>{{ $tag->name }}</span></a>
+                            @endforeach
+                        </div>    
                         <div class="mt-auto">
                         @if ($post->comments->isNotEmpty())
                         <p><u><strong>Comments</strong></u></p>

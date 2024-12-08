@@ -39,6 +39,8 @@ Route::delete('/admin/posts/{post}', [PostController::class, 'adminDeletePost'])
 
 Route::delete('/admin/delete', [PostController::class, 'bulkDelete'])->name('bulkDelete');
 
+Route::get('/posts/{tag}', [PostController::class, 'postByTag'])->name('posts.getByTag');
+
 //Route for a user to delete a comment on one of their posts.
 Route::delete('/comments/{comment}', [CommentController::class, 'deleteComment'])->middleware(['auth', 'verified'])->name('comments.deleteComment');
 

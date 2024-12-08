@@ -5,6 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Tag;
 use App\Models\Comment;
 use App\Models\Like;
 use Faker\Generator as Faker;
@@ -42,5 +43,21 @@ class PostFactory extends Factory
              'location' => fake()->city,
         ];
     }
+
+    public function configure()
+{
+    return $this->afterCreating(function ($post) {
+        // Fetch or create random tags
+        $tags = Tag::inRandomOrder()->take(fake()->numberBetween(1, 5))->get();
+
+        // If there are no tags, create a few
+        if ($tags->isEmpty()) {
+            $tags = Tag::factory()->count(5)->create();
+        }
+
+        // Attach the tags to the post
+        $post->tags()->attach($tags->pluck('id')->toArray());
+    });
+}
 
 }

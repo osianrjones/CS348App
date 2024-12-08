@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Tag ;
 
 class PostController extends Controller
 {
@@ -128,6 +129,16 @@ class PostController extends Controller
             return redirect()->route('dashboard');
         }
     }
+
+    public function postByTag($tagName) {
+        $tag = Tag::where('name', $tagName)->firstOrFail();
+
+        $posts = Post::whereHas('tags', function ($query) use ($tagName) {
+            $query->where('name', $tagName);
+        })->paginate(3);
+
+        return view('tag', compact('posts','tag'));
+    }       
 
     public function bulkDelete(Request $request)
     {
