@@ -238,7 +238,7 @@
             console.log(location);
 
             if (popup.classList.contains('hidden')) {
-                iframe.src = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyC4dDgA7NzpVG-0MCMnNku1g5S5mdJQbHo&q=' + location                                                                                                                                         ;
+                iframe.src = 'https://www.google.com/maps/embed/v1/place?key=' + location                                                                                                                                         ;
             } else {
                 iframe.src = ''
             }
